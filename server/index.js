@@ -3,7 +3,6 @@ const oracledb = require('oracledb');
 oracledb.outFormat = oracledb.OUT_FORMAT_ARRAY;
 const app = express();
 var cors = require('cors')
-var password = 'senha'; 
 
 
 //funcao que busca os dados no banco
@@ -11,7 +10,7 @@ async function selectAllEmployees(req, res) {
   try {
     connection = await oracledb.getConnection({
       user: 'user',
-      password: password,
+      password: 'senha',
       connectString: 'database' //os parametros de conexão foram alterados para proteger os dados da empresa
     });
 
