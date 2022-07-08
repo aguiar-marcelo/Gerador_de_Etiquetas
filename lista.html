@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="css/lista.css">
+    <title>Lista de Assinaturas</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <script>
+        /*gerar um numero de telas, que é o total de registros dividido
+        por quantos cabem em uma pagina, quando acabasse um setor gerar um novo cabeçalho*/
+
+        const date = new Date();
+        const ano = date.getFullYear()
+        const mes = date.getMonth() + 1
+        var data = mes + "/" + ano
+
+        fetch('http://localhost:8081/api')
+            .then((res) => res.json())
+            .then((registros) => {
+                var setorAntigo = registros[0][5]
+                var setorNovo = registros[0][5]
+                var aux
+                console.log(setorAntigo)
+                var r = 0
+                do {
+                    var tela = document.createElement('div')
+                    tela.classList.add('tela')
+                    document.body.appendChild(tela)
+                    tela.innerHTML = `
+                        <img src="./css/Grupo_m.jpg" alt="Grupo Rodrimar">
+                        <h2>Comprovantes - Cesta Básica - <span id="data"> ${data}</span></h2>
+                        <h3>Departamento: <span id="departamento">${setorAntigo}</span></h3>
+                        <div class="colunas">
+                            <div>Matricula</div>
+                            <div>Funcionário</div>
+                            <div>Assinatura</div>
+                            <div>Data</div>
+                        </div>
+                    `
+                    aux = 0
+                    do {
+                        aux++
+                        var cdf = registros[r][2]
+                        var nmf = registros[r][3]
+                        var item = document.createElement("div")
+                        item.innerHTML = `
+                            <div div class="item" >
+                                <div class="center">${cdf}</div>
+                                <div class="center">${nmf}</div>
+                                <div class="traco"></div>
+                                <div class="center"> ___/___/___</div>
+                            </div >
+                    `
+                        tela.appendChild(item);
+                        r++
+                        setorNovo = registros[r][5]
+                    } while (aux < 20 && setorAntigo == setorNovo);
+                    setorAntigo = setorNovo
+                } while (r < registros.length)
+            })
+    </script>
+</body>
+</html>

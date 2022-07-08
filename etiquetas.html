@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/impressao.css">
+    <title>Etiquetas</title>
+</head>
+
+<body>
+
+    <script>
+        fetch('http://localhost:8081/api')
+            .then((res) => res.json())
+            .then((registros) => {
+                console.log(registros);
+                var ntelas = registros.length / 20
+                ntelas = Math.ceil(ntelas)
+                alert(registros.length + " registros gerou: " + ntelas + " página(s) "+
+                "\nverifique se estão corretas e precione Ctrl + P")
+
+                var cde
+                var nme
+                var cdf
+                var nmf
+                var func
+                var uni
+                var r = 0
+
+
+                for (let i = 1; i <= ntelas; i++) {
+
+                    var tela = document.createElement('div')
+                    tela.classList.add('tela')
+                    document.body.appendChild(tela)
+
+
+                    for (let i = 0; i <= 19; i++) {
+                        var cde = registros[r][0]
+                        var nme = registros[r][1]
+                        var cdf = registros[r][2]
+                        var nmf = registros[r][3]
+                        var func = registros[r][4]
+                        var uni = registros[r][5]
+                        var item = document.createElement("div")
+                        item.innerHTML = "<br><p class='txt'>" + cde + " " + nme + "<br>" + cdf + " " + "<b>" + nmf + "</b>" + "<br>" + func + " - " + uni + "</p>"
+                        tela.appendChild(item);
+                        r++
+                    }
+                }
+            })
+    </script>
+</body>
+
+</html>
